@@ -41,7 +41,7 @@ const Footer = () => {
         {/* Bottom Text */}
         <div className="border-t border-white/10 text-center">
           <p className="text-white/60 text-xs sm:text-sm italic py-3 sm:py-4">
-            "Where cinema meets consciousness"
+            &ldquo;Where cinema meets consciousness&rdquo;
           </p>
         </div>
       </div>

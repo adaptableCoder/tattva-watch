@@ -9,7 +9,7 @@ const SearchFilters = ({
         <div className="relative max-w-3xl mx-auto">
           <input
             type="text"
-            placeholder="Search movies, directors, actors..."
+            placeholder={'Search movies, directors, actors...'}
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
             className="w-full px-4 py-3 pl-12 pr-12 bg-white/10 border border-white/20 rounded-full text-white placeholder-white/50 focus:outline-none focus:border-orange-500/50 focus:bg-white/15 transition-all duration-200 disabled:opacity-50"

@@ -1,46 +1,46 @@
 const BehindTheScenes = () => {
   const stories = [
     {
-      quote: "The entire song 'Ik Junoon' was shot in a single take. Ranveer's energy was so infectious that the crew forgot they were working.",
-      movie: "Zindagi Na Milegi Dobara",
-      person: "Zoya Akhtar",
-      role: "Director",
-      type: "Director's Cut"
+      quote: 'The entire song \'Ik Junoon\' was shot in a single take. Ranveer\'s energy was so infectious that the crew forgot they were working.',
+      movie: 'Zindagi Na Milegi Dobara',
+      person: 'Zoya Akhtar',
+      role: 'Director',
+      type: 'Director\'s Cut'
     },
     {
-      quote: "Aamir spent 6 months learning wrestling techniques. His dedication inspired the entire cast to push their limits.",
-      movie: "Dangal",
-      person: "Nitesh Tiwari",
-      role: "Director",
-      type: "Behind Camera"
+      quote: 'Aamir spent 6 months learning wrestling techniques. His dedication inspired the entire cast to push their limits.',
+      movie: 'Dangal',
+      person: 'Nitesh Tiwari',
+      role: 'Director',
+      type: 'Behind Camera'
     },
     {
-      quote: "The rain scene in 'Barfi' wasn't planned. It started raining during the shoot, and Ranbir improvised beautifully.",
-      movie: "Barfi!",
-      person: "Anurag Basu",
-      role: "Director",
-      type: "Happy Accidents"
+      quote: 'The rain scene in \'Barfi\' wasn\'t planned. It started raining during the shoot, and Ranbir improvised beautifully.',
+      movie: 'Barfi!',
+      person: 'Anurag Basu',
+      role: 'Director',
+      type: 'Happy Accidents'
     },
     {
-      quote: "Irrfan would often break character and share philosophical thoughts between takes. Those moments were pure magic.",
-      movie: "The Lunchbox",
-      person: "Ritesh Batra",
-      role: "Director", 
-      type: "Actor's Method"
+      quote: 'Irrfan would often break character and share philosophical thoughts between takes. Those moments were pure magic.',
+      movie: 'The Lunchbox',
+      person: 'Ritesh Batra',
+      role: 'Director', 
+      type: 'Actor\'s Method'
     },
     {
-      quote: "The entire climax of 'Tumhari Sulu' was rewritten after Vidya's improvisation during a rehearsal. Spontaneity at its best.",
-      movie: "Tumhari Sulu",
-      person: "Suresh Triveni",
-      role: "Director",
-      type: "Creative Process"
+      quote: 'The entire climax of \'Tumhari Sulu\' was rewritten after Vidya\'s improvisation during a rehearsal. Spontaneity at its best.',
+      movie: 'Tumhari Sulu',
+      person: 'Suresh Triveni',
+      role: 'Director',
+      type: 'Creative Process'
     },
     {
-      quote: "Rajkummar lived in Delhi slums for 2 weeks to understand his character. His commitment redefined method acting for us.",
-      movie: "Newton",
-      person: "Amit Masurkar",
-      role: "Director",
-      type: "Character Study"
+      quote: 'Rajkummar lived in Delhi slums for 2 weeks to understand his character. His commitment redefined method acting for us.',
+      movie: 'Newton',
+      person: 'Amit Masurkar',
+      role: 'Director',
+      type: 'Character Study'
     }
   ];
 
@@ -87,7 +87,7 @@ const BehindTheScenes = () => {
                   
                   {/* Quote */}
                   <blockquote className="text-white text-sm leading-relaxed italic mb-4 drop-shadow-[0_0_10px_rgba(255,255,255,0.3)] text-center">{/*leading-relaxed for more line height*/}
-                    "{story.quote}"
+                    &ldquo;{story.quote}&rdquo;
                   </blockquote>
                   
                   {/* Movie Title */}

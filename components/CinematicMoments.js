@@ -150,7 +150,7 @@ const CinematicMoments = () => {
                       <div className="space-y-3">
                         {/* Quote */}
                         <blockquote className="text-sm text-white leading-relaxed italic">
-                          "{moment.quote}"
+                          &ldquo;{moment.quote}&rdquo;
                         </blockquote>
                         
                         {/* Movie Title */}
