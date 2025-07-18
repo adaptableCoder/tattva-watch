@@ -1,9 +1,20 @@
 import { clerkMiddleware, createRouteMatcher } from '@clerk/nextjs/server'
 
-const isPublicRoute = createRouteMatcher(['/','/sign-in(.*)', '/sign-up(.*)', '/forgot-password(.*)', '/reset-password(.*)'])
+// Only home page, auth pages, and TMDB movie API routes are public
+const isPublicRoute = createRouteMatcher([
+  '/',
+  '/sign-in(.*)', 
+  '/sign-up(.*)', 
+  '/forgot-password(.*)', 
+  '/reset-password(.*)',
+  '/api/movies(.*)'  // TMDB API routes should be public
+])
 
 export default clerkMiddleware(async (auth, req) => {
-  if (!isPublicRoute(req)) await auth.protect()
+  // Protect all routes except public ones
+  if (!isPublicRoute(req)) {
+    await auth.protect()
+  }
 })
 
 export const config = {

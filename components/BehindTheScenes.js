@@ -77,50 +77,38 @@ const BehindTheScenes = () => {
                 <div className="absolute inset-0 shadow-[0_0_40px_rgba(0,0,0,0.5)] group-hover:shadow-[0_0_60px_rgba(245,158,11,0.3)] transition-shadow duration-500 rounded-full"></div>
                 
                 {/* Content */}
-                <div className="relative h-full p-8 flex flex-col justify-center items-center text-center z-10">
+                <div className="relative h-full p-6 flex flex-col justify-center items-center text-center z-10">
                   {/* Story Type Icon */}
-                  <div className="mb-4 w-12 h-12 bg-amber-500/20 rounded-full flex items-center justify-center border border-amber-500/30 group-hover:bg-amber-500/30 transition-all duration-300">
-                    <svg className="w-6 h-6 text-amber-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <div className="mb-3 w-10 h-10 bg-amber-500/20 rounded-full flex items-center justify-center border border-amber-500/30 group-hover:bg-amber-500/30 transition-all duration-300">
+                    <svg className="w-5 h-5 text-amber-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z" />
                     </svg>
                   </div>
                   
                   {/* Quote */}
-                  <blockquote className="text-white/90 text-sm leading-relaxed italic mb-4 line-clamp-4 drop-shadow-[0_0_10px_rgba(255,255,255,0.2)]">
+                  <blockquote className="text-white text-sm leading-relaxed italic mb-4 drop-shadow-[0_0_10px_rgba(255,255,255,0.3)] text-center">{/*leading-relaxed for more line height*/}
                     "{story.quote}"
                   </blockquote>
                   
                   {/* Movie Title */}
-                  <h3 className="text-lg font-bold text-amber-500 drop-shadow-[0_0_15px_rgba(245,158,11,0.6)] group-hover:text-amber-400 transition-colors duration-300 mb-2">
+                  <h3 className="text-base font-bold text-amber-500 drop-shadow-[0_0_15px_rgba(245,158,11,0.6)] group-hover:text-amber-400 transition-colors duration-300 mb-2">
                     {story.movie}
                   </h3>
                   
                   {/* Attribution */}
-                  <div className="text-center">
-                    <p className="text-white/80 text-sm font-medium">{story.person}</p>
+                  <div className="text-center mb-2">
+                    <p className="text-white/80 text-xs font-medium">{story.person}</p>
                     <p className="text-amber-500/80 text-xs">{story.role}</p>
                   </div>
                   
                   {/* Story Type Badge */}
-                  <div className="mt-3 px-3 py-1 bg-amber-500/20 backdrop-blur-sm rounded-full text-xs font-medium text-amber-400 border border-amber-500/30">
+                  <div className="px-2 py-1 bg-amber-500/20 backdrop-blur-sm rounded-full text-xs font-medium text-amber-400 border border-amber-500/30">
                     {story.type}
                   </div>
                 </div>
               </div>
             </div>
           ))}
-        </div>
-
-        {/* Bottom CTA */}
-        <div className="text-center mt-16">
-          <button className="group bg-amber-500/20 hover:bg-amber-500/30 text-amber-500 px-8 py-4 rounded-full transition-all duration-300 border border-amber-500/30 hover:border-amber-500/50 shadow-[0_0_30px_rgba(245,158,11,0.2)] hover:shadow-[0_0_40px_rgba(245,158,11,0.4)] backdrop-blur-sm" >
-            <span className="flex items-center space-x-3">
-              <span className="font-medium">Discover More Stories</span>
-              <svg className="w-5 h-5 group-hover:translate-x-1 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
-              </svg>
-            </span>
-          </button>
         </div>
       </div>
     </section>

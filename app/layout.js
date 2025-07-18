@@ -6,7 +6,7 @@ import "./globals.css"
 import Script from "next/script"
 
 export const metadata = {
-  title: "TattvaWatch | Home",
+  title: "TattvaWatch",
   description: "Your ultimate movie discovery platform. Find, curate, and explore the best films with personalized recommendations and watchlists.",
 };
 

@@ -4,8 +4,6 @@ import { UserProfile } from '@clerk/nextjs'
 
 const ProfileHeader = ({ user }) => {
   const [showUserProfile, setShowUserProfile] = useState(false)
-  const [isEditingBio, setIsEditingBio] = useState(false)
-  const [bioText, setBioText] = useState("Every frame tells a story, every story touches a soul. Welcome to my cinematic journey where passion meets storytelling.")
   
   // Extract user data from Clerk
   const firstName = user?.firstName || 'Movie'
@@ -51,51 +49,6 @@ const ProfileHeader = ({ user }) => {
                 </h1>
                 <p className="text-xl text-white/70 mb-2">@{username}</p>
                 <p className="text-lg text-white/60 mb-6">{email}</p>
-                
-                {/* Bio */}
-                <div className="bg-white/5 backdrop-blur-xl rounded-2xl p-6 border border-white/10 max-w-2xl">
-                  <div className="flex items-center justify-between mb-4">
-                    <h3 className="text-lg font-semibold text-white/90">Bio</h3>
-                    <button
-                      onClick={() => setIsEditingBio(!isEditingBio)}
-                      className="w-8 h-8 bg-orange-500/20 hover:bg-orange-500/30 text-orange-500 rounded-full flex items-center justify-center transition-all duration-200 border border-orange-500/30 hover:border-orange-500/50"
-                    >
-                      <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z" />
-                      </svg>
-                    </button>
-                  </div>
-                  
-                  {isEditingBio ? (
-                    <div className="space-y-3">
-                      <textarea
-                        value={bioText}
-                        onChange={(e) => setBioText(e.target.value)}
-                        className="w-full p-3 bg-white/10 border border-white/20 rounded-lg text-white placeholder-white/50 resize-none focus:outline-none focus:border-orange-500/50 focus:bg-white/15 transition-all duration-200"
-                        rows="4"
-                        placeholder="Write your bio..."
-                      />
-                      <div className="flex gap-2 justify-end">
-                        <button
-                          onClick={() => setIsEditingBio(false)}
-                          className="px-4 py-2 bg-white/10 hover:bg-white/20 text-white rounded-lg border border-white/20 hover:border-white/30 transition-all duration-200 text-sm"
-                        >
-                          Cancel
-                        </button>
-                        <button
-                          onClick={() => setIsEditingBio(false)}
-                          className="px-4 py-2 bg-orange-500/20 hover:bg-orange-500/30 text-orange-500 rounded-lg border border-orange-500/30 hover:border-orange-500/50 transition-all duration-200 text-sm shadow-[0_0_15px_rgba(249,115,22,0.2)] hover:shadow-[0_0_25px_rgba(249,115,22,0.3)]"
-                        >
-                          Save
-                        </button>
-                      </div>
-                    </div>
-                  ) : (
-                    <p className="text-white/80 leading-relaxed">
-                      "{bioText}"
-                    </p>
-                  )}
-                </div>
               </div>
               
               {/* Action Buttons */}

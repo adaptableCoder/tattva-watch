@@ -1,4 +1,3 @@
-// components/explore/ExploreHero.js
 const ExploreHero = () => {
   return (
     <section className="pt-32 pb-12 px-4 sm:px-6 lg:px-8 bg-gradient-to-br from-orange-500/10 to-transparent">

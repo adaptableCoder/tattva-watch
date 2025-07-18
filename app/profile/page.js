@@ -6,7 +6,6 @@ import { SignIn } from '@clerk/nextjs'
 
 import Navbar from '@/components/Navbar'
 import ProfileHeader from '@/components/profile/ProfileHeader'
-import ProfileStats from '@/components/profile/ProfileStats'
 import WatchlistSection from '@/components/profile/WatchlistSection'
 import Footer from '@/components/Footer'
 
@@ -31,7 +30,6 @@ const Profile = () => {
     return (
       <main className="min-h-screen bg-[#0B0B0F] text-white">
         <Navbar />
-        
         {/* Auth Required Message */}
         <div className="pt-16 min-h-screen flex items-center justify-center px-4">
           <div className="text-center max-w-md mx-auto">
@@ -41,16 +39,13 @@ const Profile = () => {
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
                 </svg>
               </div>
-              
               <h2 className="text-3xl font-bold text-white mb-4">
                 <span className="text-orange-500 drop-shadow-[0_0_15px_rgba(249,115,22,0.6)]">Sign In </span>
                 <span className="drop-shadow-[0_0_10px_rgba(255,255,255,0.3)]">Required</span>
               </h2>
-              
               <p className="text-white/70 mb-6 leading-relaxed">
                 Access your personalized profile, watchlist, and cinema journey. Join the TattvaWatch community today!
               </p>
-              
               <button 
                 onClick={() => setShowSignIn(true)}
                 className="px-8 py-4 bg-orange-500/20 hover:bg-orange-500/30 text-orange-500 rounded-full border border-orange-500/30 hover:border-orange-500/50 transition-all duration-300 shadow-[0_0_20px_rgba(249,115,22,0.2)] hover:shadow-[0_0_30px_rgba(249,115,22,0.4)] font-medium"
@@ -60,7 +55,6 @@ const Profile = () => {
             </div>
           </div>
         </div>
-
         {/* SignIn Modal */}
         {showSignIn && (
           <div className="fixed inset-0 bg-black/80 backdrop-blur-sm flex items-center justify-center z-50 p-4">
@@ -74,7 +68,6 @@ const Profile = () => {
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
                 </svg>
               </button>
-
               {/* SignIn Component */}
               <div className="mt-4">
                 <SignIn 
@@ -99,7 +92,6 @@ const Profile = () => {
             </div>
           </div>
         )}
-        
         <Footer />
       </main>
     )
@@ -111,7 +103,6 @@ const Profile = () => {
       
       <div className="pt-16">
         <ProfileHeader user={user} />
-        <ProfileStats user={user} />
         <WatchlistSection user={user} />
       </div>
       

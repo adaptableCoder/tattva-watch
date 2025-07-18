@@ -2,7 +2,7 @@
 import React, { useState, useEffect } from 'react'
 import Button_arrows from './Button_arrows'
 
-import { SignedIn, SignedOut, SignUp, useUser } from '@clerk/nextjs'
+import { SignedOut, SignUp, useUser } from '@clerk/nextjs'
 
 const HeroBanner = () => {
   const [showSignUp, setShowSignUp] = useState(false)
@@ -106,10 +106,6 @@ const HeroBanner = () => {
               <div className="text-center space-y-3">
                 <h3 className="text-lg font-bold text-white drop-shadow-[0_0_10px_rgba(255,255,255,0.3)]">The Cinematic Experience</h3>
                 <p className="text-orange-500 font-semibold text-sm drop-shadow-[0_0_8px_rgba(249,115,22,0.5)]">★ 8.9 IMDb</p>
-                
-                <button className="w-full bg-orange-500/20 hover:bg-orange-500/30 text-orange-500 font-semibold py-2 px-4 rounded-lg transition-all duration-300 backdrop-blur-sm border border-orange-500/30 hover:border-orange-500/50 shadow-[0_0_20px_rgba(249,115,22,0.2)] hover:shadow-[0_0_30px_rgba(249,115,22,0.4)] text-sm">
-                  Add to Watchlist
-                </button>
               </div>
             </div>
           </div>

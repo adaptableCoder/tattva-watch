@@ -1,42 +1,102 @@
+"use client"
+import { useState, useEffect } from 'react';
+
 const TattvaPicks = () => {
+  const [picksWithPosters, setPicksWithPosters] = useState([]);
+  const [loading, setLoading] = useState(true);
+
   const picks = [
     {
-      theme: "Self Discovery",
-      title: "Tamasha",
-      subtitle: "Finding yourself in chaos",
+      theme: "Spirituality",
+      title: "Guide",
+      subtitle: "Journey of transformation",
       size: "row-span-2 col-span-1"
     },
     {
-      theme: "Stillness",
-      title: "Masaan",
-      subtitle: "Peace in acceptance",
+      theme: "Artistry",
+      title: "Kagaz Ke Phool",
+      subtitle: "Dreams and reality",
       size: "row-span-1 col-span-2"
     },
     {
-      theme: "Joy",
-      title: "Barfi",
-      subtitle: "Love without words",
-      size: "row-span-1 col-span-1"
-    },
-    {
-      theme: "Melancholy",
-      title: "October",
-      subtitle: "Gentle farewells",
-      size: "row-span-1 col-span-1"
-    },
-    {
-      theme: "Wonder",
-      title: "Zindagi Na Milegi Dobara",
-      subtitle: "Life's adventures",
+      theme: "Valor",
+      title: "Chaar Sahibzaade",
+      subtitle: "Courage of the young",
       size: "row-span-2 col-span-1"
     },
     {
-      theme: "Courage",
-      title: "Dangal",
-      subtitle: "Breaking barriers",
+      theme: "Melancholy",
+      title: "Mera Naam Joker",
+      subtitle: "Laughter through tears",
+      size: "row-span-2 col-span-1"
+    },
+    {
+      theme: "Innocence",
+      title: "The Little Prince",
+      subtitle: "Childlike wonder",
       size: "row-span-1 col-span-1"
-    }
+    },
+    {
+      theme: "Environment",
+      title: "Kadvi Hawa",
+      subtitle: "Nature's awakening",
+      size: "row-span-1 col-span-1"
+    },
+    {
+      theme: "Sacrifice",
+      title: "Mother India",
+      subtitle: "A mother's eternal love",
+      size: "row-span-2 col-span-1"
+    },
+    {
+      theme: "Education",
+      title: "3 Idiots",
+      subtitle: "Learning with joy",
+      size: "row-span-2 col-span-1"
+    },
+    {
+      theme: "Revolution",
+      title: "Rang De Basanti",
+      subtitle: "Youth awakening",
+      size: "row-span-1 col-span-2"
+    },
   ];
+
+  // Simple function to fetch movie poster from TMDB API
+  const fetchMoviePoster = async (movieTitle) => {
+    try {
+      const response = await fetch(`/api/movies/search?q=${encodeURIComponent(movieTitle)}`);
+      const data = await response.json();
+      
+      if (data.success && data.data.results && data.data.results.length > 0) {
+        // For Mother India, take the 2nd result (index 1)
+        const movieIndex = movieTitle === "Mother India" ? 1 : 0;
+        const movie = data.data.results[movieIndex] || data.data.results[0];
+        return movie.poster_path ? `https://image.tmdb.org/t/p/w500${movie.poster_path}` : null;
+      }
+      return null;
+    } catch (error) {
+      console.error(`Error fetching poster for ${movieTitle}:`, error);
+      return null;
+    }
+  };
+
+  // Fetch posters for all movies
+  useEffect(() => {
+    const fetchAllPosters = async () => {
+      setLoading(true);
+      const picksWithPosters = await Promise.all(
+        picks.map(async (pick) => {
+          const poster = await fetchMoviePoster(pick.title);
+          return { ...pick, poster };
+        })
+      );
+      setPicksWithPosters(picksWithPosters);
+      setLoading(false);
+    };
+
+    fetchAllPosters();
+  }, []);
 
   return (
     <section className="py-20 px-4 sm:px-6 lg:px-8 bg-[#0B0B0F]">
@@ -53,60 +113,62 @@ const TattvaPicks = () => {
         </div>
 
         {/* Bento Grid */}
-        <div className="grid grid-cols-2 md:grid-cols-3 gap-4 md:gap-6 max-w-6xl mx-auto">
-          {picks.map((pick, index) => (
-            <div
-              key={index}
-              className={`${pick.size} group relative overflow-hidden rounded-2xl bg-white/5 backdrop-blur-xl border border-white/10 hover:border-orange-500/50 transition-all duration-500 hover:scale-[1.02] cursor-pointer`}
-            >
-              {/* Glassmorphism Background */}
-              <div className="absolute inset-0 bg-gradient-to-br from-white/10 via-white/5 to-transparent backdrop-blur-xl"></div>
-              
-              {/* Default Gradient - Bottom Right Corner */}
-              <div className="absolute inset-0 bg-gradient-to-br from-transparent via-transparent to-orange-500/20 group-hover:opacity-0 transition-opacity duration-500"></div>
-              
-              {/* Subtle Orange Glow on Hover */}
-              <div className="absolute inset-0 bg-gradient-to-br from-orange-400/5 via-orange-400/10 to-orange-400/5 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
-              
-              {/* Content */}
-              <div className="relative h-full p-6 flex flex-col justify-between">
-                {/* Top Section with Theme Badge */}
-                <div className="flex justify-between items-start">
-                  <div className="inline-flex items-center px-3 py-1 bg-white/10 backdrop-blur-sm rounded-full text-xs font-medium text-orange-500 group-hover:text-white border border-orange-500/30 shadow-lg">
-                    <div className="w-2 h-2 bg-orange-500 rounded-full mr-2 shadow-[0_0_8px_rgba(249,115,22,0.6)]"></div>
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6 max-w-7xl mx-auto grid-rows-4 md:grid-rows-3">
+          {loading ? (
+            // Loading skeletons
+            Array(10).fill(0).map((_, index) => (
+              <div
+                key={index}
+                className={`${picks[index]?.size || "row-span-1 col-span-1"} relative overflow-hidden rounded-2xl bg-white/5 border border-white/10 animate-pulse`}
+              >
+                <div className="h-full p-6 flex flex-col justify-between">
+                  <div className="h-6 bg-white/10 rounded w-20"></div>
+                  <div className="space-y-3">
+                    <div className="h-6 bg-white/10 rounded w-3/4"></div>
+                    <div className="h-4 bg-white/5 rounded w-1/2"></div>
+                  </div>
+                </div>
+              </div>
+            ))
+          ) : (
+            picksWithPosters.map((pick, index) => (
+              <div
+                key={index}
+                className={`${pick.size} group relative overflow-hidden rounded-2xl bg-white/5 border border-white/10 hover:border-orange-500/50 transition-all duration-500 hover:scale-[1.02] cursor-pointer`}
+              >
+                {/* Movie Poster Background */}
+                {pick.poster && (
+                  <div className="absolute inset-0">
+                    <img
+                      src={pick.poster}
+                      alt={pick.title}
+                      className="w-full h-full object-cover opacity-50 group-hover:opacity-60 transition-opacity duration-500"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent"></div>
+                  </div>
+                )}
+                
+                {/* Content */}
+                <div className="relative h-full p-6 flex flex-col justify-between">
+                  {/* Theme Badge */}
+                  <div className="inline-flex items-center px-3 py-1 bg-white/10 rounded-full text-xs font-medium text-orange-500 border border-orange-500/30 w-fit">
+                    <div className="w-2 h-2 bg-orange-500 rounded-full mr-2"></div>
                     {pick.theme}
                   </div>
                   
-                  {/* Hover Play Icon */}
-                  <div className="w-8 h-8 bg-white/5 backdrop-blur-sm rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all duration-300 border border-white/20 hover:border-orange-500/40">
-                    <svg className="w-4 h-4 text-white/80 group-hover:text-orange-500 transition-colors duration-300" fill="currentColor" viewBox="0 0 24 24">
-                      <path d="M8 5v14l11-7z"/>
-                    </svg>
+                  {/* Title and Subtitle */}
+                  <div className="space-y-3">
+                    <h3 className="text-xl md:text-2xl font-bold text-white group-hover:text-orange-500 transition-colors duration-300">
+                      {pick.title}
+                    </h3>
+                    <p className="text-sm text-white/70">
+                      {pick.subtitle}
+                    </p>
                   </div>
                 </div>
-                
-                {/* Bottom Section with Title and Subtitle */}
-                <div className="space-y-3">
-                  <h3 className="text-xl md:text-2xl font-bold text-white drop-shadow-[0_0_10px_rgba(255,255,255,0.3)] group-hover:text-orange-500 transition-colors duration-300">
-                    {pick.title}
-                  </h3>
-                  
-                  <p className="text-sm text-white/70 leading-relaxed">
-                    {pick.subtitle}
-                  </p>
-                  
-                  {/* Bottom Accent Line */}
-                  <div className="w-12 h-0.5 bg-gradient-to-r from-orange-500/50 to-transparent group-hover:from-orange-500 group-hover:w-24 transition-all duration-500"></div>
-                </div>
               </div>
-
-              {/* Subtle Glow Effect */}
-              <div className="absolute inset-0 shadow-[inset_0_1px_0_rgba(255,255,255,0.1)] group-hover:shadow-[inset_0_1px_0_rgba(255,255,255,0.2),0_0_20px_rgba(249,115,22,0.1)] transition-all duration-500 rounded-2xl"></div>
-              
-              {/* Outer Glow */}
-              <div className="absolute -inset-0.5 bg-gradient-to-r from-orange-500/0 via-orange-500/0 to-orange-500/0 group-hover:from-orange-500/20 group-hover:via-orange-500/5 group-hover:to-orange-500/20 rounded-2xl blur-sm opacity-0 group-hover:opacity-100 transition-opacity duration-500 -z-10"></div>
-            </div>
-          ))}
+            ))
+          )}
         </div>
       </div>
     </section>
