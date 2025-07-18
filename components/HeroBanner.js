@@ -6,6 +6,26 @@ import { SignedOut, SignUp, useUser } from '@clerk/nextjs'
 
 const HeroBanner = () => {
   const [showSignUp, setShowSignUp] = useState(false)
+  const [poster, setPoster] = useState(null);
+
+  // Fetch poster for Rocketry: The Nambi Effect
+  useEffect(() => {
+    const fetchMoviePoster = async () => {
+      try {
+        const response = await fetch(`/api/movies/search?q=${encodeURIComponent('Rocketry: The Nambi Effect')}`);
+        const data = await response.json();
+        if (data.success && data.data.results && data.data.results.length > 0) {
+          const movie = data.data.results[0];
+          setPoster(movie.poster_path ? `https://image.tmdb.org/t/p/w500${movie.poster_path}` : null);
+        } else {
+          setPoster(null);
+        }
+      } catch (error) {
+        setPoster(null);
+      }
+    };
+    fetchMoviePoster();
+  }, []);
   const { isSignedIn } = useUser()
 
   useEffect(() => {
@@ -88,24 +108,26 @@ const HeroBanner = () => {
           </div>
         </div>
 
-        {/* Featured Movie Card - Compact Version */}
+        {/* Featured Movie Card - Rocketry: The Nambi Effect */}
         <div className="hidden lg:block">
           <div className="relative group max-w-sm mx-auto">
             <div className="bg-black/20 backdrop-blur-2xl rounded-2xl p-6 border border-white/10 shadow-[0_0_40px_rgba(0,0,0,0.5)] hover:shadow-[0_0_60px_rgba(249,115,22,0.3)] transition-all duration-500 hover:scale-105">
-              {/* Movie Poster Placeholder */}
-              <div className="aspect-[3/4] bg-gradient-to-br from-orange-500/20 to-orange-600/30 rounded-xl mb-4 flex items-center justify-center border border-orange-500/20 shadow-[0_0_30px_rgba(249,115,22,0.2)]">
-                <div className="text-center text-white/80">
-                  <svg className="w-12 h-12 mx-auto mb-3 drop-shadow-[0_0_10px_rgba(255,255,255,0.3)]" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M7 4V2a1 1 0 011-1h8a1 1 0 011 1v2m0 0V3a1 1 0 011 1v10a1 1 0 01-1 1H8a1 1 0 01-1-1V4m0 0H5a1 1 0 00-1 1v14a1 1 0 001 1h14a1 1 0 001-1V5a1 1 0 00-1-1h-2" />
-                  </svg>
-                  <p className="text-sm font-medium">Featured Movie</p>
-                </div>
+              {/* Movie Poster */}
+              <div className="aspect-[3/4] rounded-xl mb-4 border border-orange-500/20 shadow-[0_0_30px_rgba(249,115,22,0.2)] overflow-hidden bg-black flex items-center justify-center">
+                {poster ? (
+                  <img
+                    src={poster}
+                    alt="Rocketry: The Nambi Effect Poster"
+                    className="w-full h-full object-cover object-center max-h-[340px]"
+                  />
+                ) : (
+                  <div className="w-full h-full flex items-center justify-center text-white/40 text-lg">No Poster</div>
+                )}
               </div>
-              
               {/* Movie Info */}
               <div className="text-center space-y-3">
-                <h3 className="text-lg font-bold text-white drop-shadow-[0_0_10px_rgba(255,255,255,0.3)]">The Cinematic Experience</h3>
-                <p className="text-orange-500 font-semibold text-sm drop-shadow-[0_0_8px_rgba(249,115,22,0.5)]">★ 8.9 IMDb</p>
+                <h3 className="text-lg font-bold text-white drop-shadow-[0_0_10px_rgba(255,255,255,0.3)]">Rocketry: The Nambi Effect</h3>
+                <p className="text-orange-500 font-semibold text-sm drop-shadow-[0_0_8px_rgba(249,115,22,0.5)]">★ 8.7 IMDb</p>
               </div>
             </div>
           </div>
