@@ -3,9 +3,10 @@ import React, { useState, useEffect } from 'react'
 
 import Navbar from '@/components/Navbar'
 import Footer from '@/components/Footer'
+
 import ExploreHero from '@/components/explore/ExploreHero'
 import MoviesGrid from '@/components/explore/MoviesGrid'
-
+import SearchFilters from '@/components/explore/SearchFilters'
 import { movieApi, movieUtils } from '@/lib/api'
 
 const Explore = () => {
@@ -58,12 +59,9 @@ const Explore = () => {
     }
   }
 
-  // Handle search input change
-  const handleSearchChange = (e) => {
-    const query = e.target.value
+  // Handle search input change (debounced)
+  const handleSearchChange = (query) => {
     setSearchQuery(query)
-    
-    // Debounce search to avoid excessive API calls
     setTimeout(() => {
       fetchMovies(query)
     }, 300)
@@ -78,35 +76,12 @@ const Explore = () => {
         {/* Hero section */}
         <ExploreHero />
         
-        {/* Simple Search */}
-        <section className="pb-8 px-4 sm:px-6 lg:px-8">
-          <div className="max-w-7xl mx-auto">
-            <div className="max-w-md mx-auto">
-              <div className="relative">
-                <input
-                  type="text"
-                  placeholder="Search movies..."
-                  value={searchQuery}
-                  onChange={handleSearchChange}
-                  className="w-full px-4 py-3 pl-12 bg-white/5 border border-white/10 rounded-full text-white placeholder-white/50 focus:outline-none focus:ring-2 focus:ring-orange-500/50 focus:border-orange-500/50 transition-all duration-300"
-                />
-                <svg
-                  className="absolute left-4 top-1/2 transform -translate-y-1/2 w-5 h-5 text-white/50"
-                  fill="none"
-                  stroke="currentColor"
-                  viewBox="0 0 24 24"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    strokeWidth={2}
-                    d="m21 21-6-6m2-5a7 7 0 1 1-14 0 7 7 0 0 1 14 0Z"
-                  />
-                </svg>
-              </div>
-            </div>
-          </div>
-        </section>
+        {/* Search Bar with SearchFilters styling */}
+        <SearchFilters
+          searchQuery={searchQuery}
+          setSearchQuery={handleSearchChange}
+          loading={loading}
+        />
         
         {/* Error state */}
         {error ? (
