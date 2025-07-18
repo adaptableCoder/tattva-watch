@@ -1,8 +1,10 @@
 "use client"
-import { useEffect, useRef } from 'react';
+import { useEffect, useState, useRef } from 'react';
 
 const CinematicMoments = () => {
-  const scrollRef = useRef(null);
+  const [momentsWithPosters, setMomentsWithPosters] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const scrollContainerRef = useRef(null);
 
   const moments = [
     {
@@ -37,41 +39,57 @@ const CinematicMoments = () => {
     }
   ];
 
-  // Auto-scroll functionality
-  useEffect(() => {
-    const scrollContainer = scrollRef.current;
-    if (!scrollContainer) return;
-
-    let scrollAmount = 0;
-    const cardWidth = 280; // Approximate card width + gap
-    const maxScroll = cardWidth * moments.length;
-
-    const autoScroll = () => {
-      scrollAmount += 0.5; // Slow scroll speed
-      if (scrollAmount >= maxScroll) {
-        scrollAmount = 0; // Reset to beginning
+  // Simple function to fetch movie poster from TMDB API
+  const fetchMoviePoster = async (movieTitle) => {
+    try {
+      const response = await fetch(`/api/movies/search?q=${encodeURIComponent(movieTitle)}`);
+      const data = await response.json();
+      
+      if (data.success && data.data.results && data.data.results.length > 0) {
+        const movie = data.data.results[0];
+        return movie.poster_path ? `https://image.tmdb.org/t/p/w500${movie.poster_path}` : null;
       }
-      scrollContainer.scrollLeft = scrollAmount;
+      return null;
+    } catch (error) {
+      console.error(`Error fetching poster for ${movieTitle}:`, error);
+      return null;
+    }
+  };
+
+  // Fetch posters for all movies
+  useEffect(() => {
+    const fetchAllPosters = async () => {
+      setLoading(true);
+      const momentsWithPosters = await Promise.all(
+        moments.map(async (moment) => {
+          const poster = await fetchMoviePoster(moment.movie);
+          return { ...moment, poster };
+        })
+      );
+      setMomentsWithPosters(momentsWithPosters);
+      setLoading(false);
     };
 
-    const interval = setInterval(autoScroll, 50); // Smooth 60fps scrolling
+    fetchAllPosters();
+  }, []);
 
-    // Pause on hover
-    const handleMouseEnter = () => clearInterval(interval);
-    const handleMouseLeave = () => {
-      const newInterval = setInterval(autoScroll, 50);
-      return newInterval;
-    };
+  // Simple auto-scroll functionality
+  useEffect(() => {
+    const scrollContainer = scrollContainerRef.current;
+    if (!scrollContainer || loading) return;
 
-    scrollContainer.addEventListener('mouseenter', handleMouseEnter);
-    scrollContainer.addEventListener('mouseleave', handleMouseLeave);
+    const scrollInterval = setInterval(() => {
+      const maxScrollLeft = scrollContainer.scrollWidth - scrollContainer.clientWidth;
+      
+      if (scrollContainer.scrollLeft >= maxScrollLeft) {
+        scrollContainer.scrollLeft = 0;
+      } else {
+        scrollContainer.scrollLeft += 1;
+      }
+    }, 80);
 
-    return () => {
-      clearInterval(interval);
-      scrollContainer?.removeEventListener('mouseenter', handleMouseEnter);
-      scrollContainer?.removeEventListener('mouseleave', handleMouseLeave);
-    };
-  }, [moments.length]);
+    return () => clearInterval(scrollInterval);
+  }, [loading]);
 
   return (
     <section className="py-20 px-4 sm:px-6 lg:px-8 bg-[#0B0B0F]">
@@ -87,62 +105,70 @@ const CinematicMoments = () => {
           </p>
         </div>
 
-        {/* Auto-scroll Container */}
+        {/* Simple Grid Container */}
         <div className="relative">
-          <div 
-            ref={scrollRef}
-            className="flex overflow-x-auto pb-6 scrollbar-hide gap-6" 
-            style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
-          >
-            {/* Duplicate moments for infinite scroll effect */}
-            {[...moments, ...moments].map((moment, index) => (
-              <div
-                key={index}
-                className="flex-none w-64 group cursor-pointer"
-              >
-                <div className="relative overflow-hidden rounded-2xl bg-black/20 backdrop-blur-lg border border-white/5 hover:border-orange-500/30 transition-all duration-500 hover:scale-[1.02] hover:translate-y-[0.75rem] h-64">
-                  {/* Background Gradient - Same for all cards */}
-                  <div className="absolute inset-0 bg-gradient-to-br from-orange-500/8 to-orange-600/12 group-hover:from-orange-500/15 group-hover:to-orange-600/20 transition-all duration-500"></div>
-                  
-                  {/* Glass Overlay */}
-                  <div className="absolute inset-0 bg-gradient-to-br from-white/[0.02] to-transparent group-hover:from-orange-500/[0.03] transition-all duration-500 rounded-2xl"></div>
-                  
-                  {/* Top Left Orange Gradient */}
-                  <div className="absolute top-0 left-0 w-24 h-24 bg-gradient-to-br from-orange-500/10 to-transparent group-hover:from-orange-500/20 transition-all duration-500"></div>
-                  
-                  {/* Glow Effect */}
-                  <div className="absolute inset-0 shadow-[0_0_30px_rgba(0,0,0,0.5)] group-hover:shadow-[0_0_50px_rgba(249,115,22,0.15)] transition-shadow duration-500 rounded-2xl"></div>
-                  
-                  {/* Content */}
-                  <div className="relative h-full p-5 flex flex-col justify-end z-10">
-                    <div className="space-y-3">
-                      {/* Quote */}
-                      <blockquote className="text-sm font-medium text-white leading-relaxed drop-shadow-[0_0_10px_rgba(255,255,255,0.3)] italic line-clamp-3">
-                        "{moment.quote}"
-                      </blockquote>
-                      
-                      {/* Movie Title */}
-                      <h3 className="text-lg font-bold text-orange-500 drop-shadow-[0_0_15px_rgba(249,115,22,0.6)] group-hover:text-orange-400 transition-colors duration-300">
-                        {moment.movie}
-                      </h3>
-                      
-                      {/* Theme */}
-                      <div className="inline-block px-2.5 py-1 bg-black/20 backdrop-blur-sm rounded-full text-xs text-orange-400 border border-orange-500/20 group-hover:bg-orange-500/10 group-hover:border-orange-500/40 group-hover:text-orange-300 transition-all duration-300">
-                        {moment.theme}
+          {loading ? (
+            // Loading skeletons
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {Array(6).fill(0).map((_, index) => (
+                <div key={index} className="animate-pulse">
+                  <div className="bg-white/5 rounded-2xl h-64 p-6">
+                    <div className="h-4 bg-white/10 rounded w-full mb-4"></div>
+                    <div className="h-4 bg-white/10 rounded w-3/4 mb-4"></div>
+                    <div className="h-6 bg-white/10 rounded w-1/2 mb-4"></div>
+                    <div className="h-5 bg-white/10 rounded w-20"></div>
+                  </div>
+                </div>
+              ))}
+            </div>
+          ) : (
+            <div 
+              ref={scrollContainerRef}
+              className="flex gap-6 overflow-x-auto pb-4"
+              style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
+            >
+              {momentsWithPosters.map((moment, index) => (
+                <div
+                  key={index}
+                  className="flex-shrink-0 w-80"
+                >
+                  <div className="relative overflow-hidden rounded-2xl bg-white/5 border border-white/10 h-64">
+                    {/* Movie Poster Background */}
+                    {moment.poster && (
+                      <div className="absolute inset-0">
+                        <img
+                          src={moment.poster}
+                          alt={moment.movie}
+                          className="w-full h-full object-cover opacity-40"
+                        />
+                        <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent"></div>
+                      </div>
+                    )}
+                    
+                    {/* Content */}
+                    <div className="relative h-full p-6 flex flex-col justify-end">
+                      <div className="space-y-3">
+                        {/* Quote */}
+                        <blockquote className="text-sm text-white leading-relaxed italic">
+                          "{moment.quote}"
+                        </blockquote>
+                        
+                        {/* Movie Title */}
+                        <h3 className="text-lg font-bold text-orange-500">
+                          {moment.movie}
+                        </h3>
+                        
+                        {/* Theme */}
+                        <div className="inline-block px-3 py-1 bg-orange-500/20 rounded-full text-xs text-orange-400">
+                          {moment.theme}
+                        </div>
                       </div>
                     </div>
                   </div>
-
-                  {/* Play Button Overlay */}
-                  <div className="absolute top-3 right-3 w-10 h-10 bg-orange-500/20 backdrop-blur-sm rounded-full flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all duration-300 border border-orange-500/30">
-                    <svg className="w-5 h-5 text-orange-500" fill="currentColor" viewBox="0 0 24 24">
-                      <path d="M8 5v14l11-7z"/>
-                    </svg>
-                  </div>
                 </div>
-              </div>
-            ))}
-          </div>
+              ))}
+            </div>
+          )}
         </div>
       </div>
     </section>

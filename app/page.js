@@ -1,3 +1,4 @@
+import Head from 'next/head';
 import Navbar from '@/components/Navbar';
 import HeroBanner from '@/components/HeroBanner';
 import TattvaPicks from '@/components/TattvaPicks';
@@ -8,15 +9,21 @@ import Footer from '@/components/Footer';
 
 const HomePage = () => {
   return (
-    <main className="bg-[#0B0B0F] text-white">
-      <Navbar />
-      <HeroBanner />
-      <TattvaPicks />
-      <FeaturesSection />
-      <CinematicMoments />
-      <BehindTheScenes />
-      <Footer />
-    </main>
+    <>
+      <Head>
+        <title>TattvaWatch | Home</title>
+        <meta name="description" content="Your ultimate movie discovery platform. Find, curate, and explore the best films with personalized recommendations and watchlists." />
+      </Head>
+      <main className="bg-[#0B0B0F] text-white">
+        <Navbar />
+        <HeroBanner />
+        <TattvaPicks />
+        <FeaturesSection />
+        <CinematicMoments />
+        <BehindTheScenes />
+        <Footer />
+      </main>
+    </>
   );
 };
 

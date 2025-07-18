@@ -57,7 +57,7 @@ const FeaturesSection = () => {
               <div className="absolute inset-0 bg-gradient-to-br from-white/[0.02] to-transparent group-hover:from-orange-500/[0.03] transition-all duration-500 rounded-3xl"></div>
               
               {/* Bottom Right Orange Gradient - Same for all cards */}
-              <div className="absolute bottom-0 right-0 w-32 h-32 bg-gradient-to-tl from-orange-500/10 to-transparent group-hover:from-orange-500/20 transition-all duration-500"></div>
+              <div className="absolute bottom-0 right-0 w-28 h-28 bg-gradient-to-tl from-orange-500/10 to-transparent group-hover:from-orange-500/20 transition-all duration-500"></div>
               
               {/* Content */}
               <div className="relative z-10 space-y-4">
@@ -86,16 +86,6 @@ const FeaturesSection = () => {
                       {detail}
                     </span>
                   ))}
-                </div>
-                
-                {/* Action Arrow */}
-                <div className="pt-2">
-                  <div className="inline-flex items-center text-orange-500 group-hover:text-orange-400 group-hover:drop-shadow-[0_0_8px_rgba(249,115,22,0.6)] transition-all duration-300">
-                    <span className="text-sm font-medium mr-2">Explore</span>
-                    <svg className="w-4 h-4 group-hover:translate-x-1 transition-transform duration-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
-                    </svg>
-                  </div>
                 </div>
               </div>
             </div>

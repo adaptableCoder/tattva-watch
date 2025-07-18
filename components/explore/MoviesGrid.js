@@ -2,8 +2,34 @@ import MovieCard from './MovieCard'
 
 const MoviesGrid = ({ 
   movies, 
-  onClearFilters 
+  onClearFilters,
+  loading = false,
+  isHomePage = false
 }) => {
+  // Loading skeleton
+  if (loading) {
+    return (
+      <section className="pb-20 px-4 sm:px-6 lg:px-8">
+        <div className="max-w-7xl mx-auto">
+          <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6">
+            {Array.from({ length: 20 }).map((_, index) => (
+              <div
+                key={index}
+                className="animate-pulse"
+              >
+                <div className="aspect-[3/4] bg-white/10 rounded-2xl mb-4"></div>
+                <div className="space-y-2">
+                  <div className="h-4 bg-white/10 rounded w-3/4"></div>
+                  <div className="h-3 bg-white/10 rounded w-1/2"></div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+    )
+  }
+
   if (movies.length === 0) {
     return (
       <section className="pb-20 px-4 sm:px-6 lg:px-8">
@@ -32,9 +58,10 @@ const MoviesGrid = ({
   return (
     <section className="pb-20 px-4 sm:px-6 lg:px-8">
       <div className="max-w-7xl mx-auto">
+        {/* Movies Grid */}
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6">
           {movies.map((movie) => (
-            <MovieCard key={movie.id} movie={movie} />
+            <MovieCard key={movie.id} movie={movie} isHomePage={isHomePage} />
           ))}
         </div>
       </div>
